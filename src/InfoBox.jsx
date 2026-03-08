@@ -13,6 +13,9 @@ export default function Info({info}){
     let HOT_URL = "https://images.unsplash.com/photo-1528306606980-c7b093f99f21?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHN1bW1lciUyMG5hdHVyZXxlbnwwfHwwfHx8MA%3D%3D";
     let COLD_URL = "https://images.unsplash.com/photo-1420585269105-d908ec316eb3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8d2ludGVyfGVufDB8fDB8fHwwRain_day.avif"
     let RAINY_URL = "https://images.unsplash.com/photo-1610741083757-1ae88e1a17f7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmFpbnklMjBkYXl8ZW58MHx8MHx8fDA%3D";
+    if(!info){
+      return <p>Loading Weather details...</p>
+    }
     return(
         <>
         <h1 className='weather'>Weather -{info.weather}</h1>

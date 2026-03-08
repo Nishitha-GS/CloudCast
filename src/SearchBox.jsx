@@ -37,7 +37,6 @@ export default function SearchBox({updateInfo}){
     let handleSubmit = async (event) =>{
         try{
             event.preventDefault();
-            console.log(city);
             setCity("");
             seterror(false);
             let newInfo = await getWeatherInfo();
@@ -46,7 +45,50 @@ export default function SearchBox({updateInfo}){
             seterror(true);
         }
     }
-    return(
+    let getLocationWeather = async (event)=>{
+        return new Promise((resolve,reject)=>{
+            if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(async (position)=>{
+                try{
+                    const lat = position.coords.latitude;
+                    const long = position.coords.longitude;
+                    const response = await fetch(`${API_URL}?lat=${lat}&lon=${long}&appid=${API_KEY}&units=metric`);
+                    const jsonresponse =await response.json();
+                    // console.log(jsonresponse);
+                    let result ={
+                    city:jsonresponse.name,
+                    temp:jsonresponse.main.temp,
+                    temp_min:jsonresponse.main.temp_min,
+                    temp_max:jsonresponse.main.temp_max,
+                    pressure:jsonresponse.main.pressure,
+                    humidity:jsonresponse.main.humidity,
+                    weather:jsonresponse.weather[0].description 
+                };
+                // console.log(result);
+                resolve(result)
+                }catch(err){
+                    seterror(true);
+                }
+
+                });
+            } else {
+                reject("Geolocation not supported");
+                }
+
+            });
+            };
+        let handleLocation = async(event)=>{
+            event.preventDefault();
+        try{
+            seterror(false);
+            let newInfo = await getLocationWeather();
+            // console.log("new node "+newInfo)
+            updateInfo(newInfo);
+        }catch(err){
+            seterror(city);
+        }
+    }
+        return(
         <>
         <div className='form'>
             <h3>Search city</h3>
@@ -55,6 +97,8 @@ export default function SearchBox({updateInfo}){
                 <br></br><br></br><br></br>
                 <Button variant="contained" type="submit" className='submitBtn'>Search</Button>
             </form>
+            <br></br><br></br><br></br>
+                <Button variant="contained" onClick={handleLocation} className='submitBtn'>Use My Location</Button>
             {error && <p style={{color:"red"}}>No such place exists!</p>}
         </div>
         </>
