@@ -39,6 +39,7 @@ export default function SearchBox({updateInfo}){
             event.preventDefault();
             console.log(city);
             setCity("");
+            seterror(false);
             let newInfo = await getWeatherInfo();
             updateInfo(newInfo); 
         }catch(err){
@@ -48,7 +49,7 @@ export default function SearchBox({updateInfo}){
     return(
         <>
         <div className='form'>
-            <h3>Search Box</h3>
+            <h3>Search city</h3>
             <form onSubmit={handleSubmit}>
                 <TextField id="outlined-basic" label="City Name" variant="outlined" onChange={searchCity} value={city} required/>
                 <br></br><br></br><br></br>
